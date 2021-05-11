@@ -17,19 +17,19 @@
                     <li class="nav-item">
                         <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
                     </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" (click)='logout()' href="#">Logout</a>
-                    </li>
                 </ng-container>         
             </ul>
 
-            <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user">
-                <a class="dropdown-toggle text-light">Welcome {{user.username | titlecase}}</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item">Edit profile</a>
-                    <a class="dropdown-item" (click)='logout()'>Logout</a>
-                </div>
+            <div class="btn-group" dropdown *ngIf="(accountService.currentUser$ | async) as user">
+                <button dropdownToggle type="button" class="btn btn-success dropdown-toggle"
+                    aria-controls="dropdown-basic">
+                    Welcome {{user.username | titlecase}} <span class="caret"></span>
+                </button>
+                <ul *dropdownMenu class="dropdown-menu" aria-labelledby="button-basic">
+                    <li><a class="dropdown-item">Edit profile</a></li>
+                    <li class="divider dropdown-divider"></li>
+                    <li><a class="dropdown-item" (click)='logout()'>Logout</a></li>
+                </ul>
             </div>
 
             <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off" class="form-inline mt-2 mt-md-0">
