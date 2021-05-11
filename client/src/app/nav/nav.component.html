@@ -6,7 +6,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto" *ngIf='accountService.currentUser$ | async'>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
@@ -16,10 +16,30 @@
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)='logout()' href="#">Logout</a>
+                </li>
             </ul>
-            <form class="form-inline mt-2 mt-md-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username">
-                <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password">
+
+            <div class="dropdown" *ngIf="accountService.currentUser$ | async">
+                <a class="dropdown-toggle text-light">Welcome {{(accountService.currentUser$ | async).username}}</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">Edit profile</a>
+                    <a class="dropdown-item" (click)='logout()'>Logout</a>
+                </div>
+            </div>
+
+            <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off" class="form-inline mt-2 mt-md-0">
+                <input
+                    name="username"
+                    [(ngModel)]="model.username" 
+                    class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username">
+
+                <input 
+                    name="password"
+                    [(ngModel)]="model.password"
+                    class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password">
+
                 <button class="btn btn-outline-success" type="submit">Login</button>
             </form>
         </div>
